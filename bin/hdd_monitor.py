@@ -195,10 +195,15 @@ class hdd_monitor():
         for index in range(0, len(drives)):
             temp = temps[index]
             
-            if not unicode(temp).isnumeric() and drives[index] not in REMOVABLE:
+            try:
+                temp = unicode(temp)
+            except:
+                temp = str(temp)
+            
+            if not temp.isnumeric() and drives[index] not in REMOVABLE:
                 temp_level = DiagnosticStatus.ERROR
                 temp_ok = False
-            elif not unicode(temp).isnumeric() and drives[index] in REMOVABLE:
+            elif not temp.isnumeric() and drives[index] in REMOVABLE:
                 temp_level = DiagnosticStatus.OK
                 temp = "Removed"
             else:
@@ -262,7 +267,11 @@ class hdd_monitor():
                 for row in rows:
                     if len(row.split()) < 2:
                         continue
-                    if unicode(row.split()[0]) == "none":
+                    try:
+                        urow = unicode(row.split()[0])
+                    except:
+                        urow = str(row.split()[0])
+                    if urow == "none":
                         continue
 
                     row_count += 1
@@ -361,7 +370,7 @@ if __name__ == '__main__':
     try:
         rospy.init_node('hdd_monitor_%s' % hostname)
     except rospy.exceptions.ROSInitException:
-        print 'HDD monitor is unable to initialize node. Master may not be running.'
+        print('HDD monitor is unable to initialize node. Master may not be running.')
         sys.exit(0)
         
     hdd_monitor = hdd_monitor(hostname, options.diag_hostname)
@@ -373,7 +382,7 @@ if __name__ == '__main__':
             hdd_monitor.publish_stats()
     except KeyboardInterrupt:
         pass
-    except Exception, e:
+    except Exception as e:
         traceback.print_exc()
 
     hdd_monitor.cancel_timers()

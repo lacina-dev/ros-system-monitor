@@ -38,7 +38,7 @@
 #    POSSIBILITY OF SUCH DAMAGE.                                           #
 ############################################################################
 
-from __future__ import with_statement
+from __future__ import print_function, with_statement
 
 import rospy
 
@@ -186,7 +186,7 @@ class NetMonitor():
         (retcode, cmd_out) = get_sys_net_stat(ifaces[i], 'tx_errors')
         if retcode == 0:
           values.append(KeyValue(key = 'Tx Errors', value = cmd_out))
-    except Exception, e:
+    except Exception as e:
       rospy.logerr(traceback.format_exc())
       msg = 'Network Usage Check Error'
       values.append(KeyValue(key = msg, value = str(e)))
@@ -248,8 +248,7 @@ if __name__ == '__main__':
   try:
     rospy.init_node('net_monitor_%s' % hostname)
   except rospy.exceptions.ROSInitException:
-    print >> sys.stderr,\
-      'Network monitor is unable to initialize node. Master may not be running.'
+    print('Network monitor is unable to initialize node. Master may not be running.', file=sys.stderr)
     sys.exit(0)
   net_node = NetMonitor(hostname, options.diag_hostname)
   rate = rospy.Rate(1.0)
@@ -259,7 +258,7 @@ if __name__ == '__main__':
       net_node.publish_stats()
   except KeyboardInterrupt:
     pass
-  except Exception, e:
+  except Exception as e:
     traceback.print_exc()
     rospy.logerr(traceback.format_exc())
   net_node.cancel_timers()
