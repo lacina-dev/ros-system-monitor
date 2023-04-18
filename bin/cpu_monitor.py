@@ -181,6 +181,8 @@ class CPUMonitor():
                                 stderr = subprocess.PIPE, shell = True)
             stdout, stderr = p.communicate()
             retcode = p.returncode
+            stdout = stdout.decode()
+            stderr = stderr.decode()
 
             if retcode != 0:
                 diag_level = DiagnosticStatus.ERROR
@@ -222,6 +224,8 @@ class CPUMonitor():
                                 stderr = subprocess.PIPE, shell = True)
             stdout, stderr = p.communicate()
             retcode = p.returncode
+            stdout = stdout.decode()
+            stderr = stderr.decode()
 
             if retcode != 0:
                 lvl = DiagnosticStatus.ERROR
@@ -261,6 +265,8 @@ class CPUMonitor():
                                 stderr = subprocess.PIPE, shell = True)
             stdout, stderr = p.communicate()
             retcode = p.returncode
+            stdout = stdout.decode()
+            stderr = stderr.decode()
 
             if retcode != 0:
                 vals.append(KeyValue(key = 'uptime Failed', value = stderr))
@@ -301,6 +307,8 @@ class CPUMonitor():
                                 stderr = subprocess.PIPE, shell = True)
             stdout, stderr = p.communicate()
             retcode = p.returncode
+            stdout = stdout.decode()
+            stderr = stderr.decode()
 
             if retcode != 0:
                 if not self._has_warned_mpstat:
@@ -394,6 +402,8 @@ class CPUMonitor():
                                 stderr = subprocess.PIPE, shell = True)
             stdout, stderr = p.communicate()
             retcode = p.returncode
+            stdout = stdout.decode()
+            stderr = stderr.decode()
 
             if retcode != 0:
                 rospy.logerr('Error find core temp locations: %s' % stderr)

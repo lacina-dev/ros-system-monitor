@@ -74,7 +74,7 @@ def get_hddtemp_data(hostname = 'localhost', port = 7634):
             newdat = hdd_sock.recv(1024)
             if len(newdat) == 0:
                 break
-            sock_data = sock_data + newdat
+            sock_data = sock_data + newdat.decode()
         hdd_sock.close()
 
         sock_vals = sock_data.split('|')
@@ -257,6 +257,8 @@ class hdd_monitor():
             p = subprocess.Popen(["df", "-Pht", "ext4"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = p.communicate()
             retcode = p.returncode
+            stdout = stdout.decode()
+            stderr = stderr.decode()
 
             if (retcode == 0 or retcode == 1):
                 diag_vals.append(KeyValue(key = 'Disk Space Reading', value = 'OK'))

@@ -127,6 +127,8 @@ class MemMonitor():
                                 stderr = subprocess.PIPE, shell = True)
             stdout, stderr = p.communicate()
             retcode = p.returncode
+            stdout = stdout.decode()
+            stderr = stderr.decode()
 
             if retcode != 0:
                 values.append(KeyValue(key = "\"free -tm\" Call Error", value = str(retcode)))
