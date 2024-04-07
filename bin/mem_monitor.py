@@ -96,7 +96,7 @@ class MemMonitor():
         self._usage_timer = None
         
         self._usage_stat = DiagnosticStatus()
-        self._usage_stat.name = 'Memory Usage (%s)' % diag_hostname
+        self._usage_stat.name = 'sys_mon: Memory Usage (%s)' % diag_hostname
         self._usage_stat.level = 1
         self._usage_stat.hardware_id = hostname
         self._usage_stat.message = 'No Data'

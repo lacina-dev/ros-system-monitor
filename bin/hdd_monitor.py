@@ -151,7 +151,7 @@ class hdd_monitor():
         self._temp_timer = None
         if not self._no_temp:
           self._temp_stat = DiagnosticStatus()
-          self._temp_stat.name = "HDD Temperature (%s)" % diag_hostname
+          self._temp_stat.name = "sys_mon: HDD Temperature (%s)" % diag_hostname
           self._temp_stat.level = DiagnosticStatus.ERROR
           self._temp_stat.hardware_id = hostname
           self._temp_stat.message = 'No Data'

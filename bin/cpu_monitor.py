@@ -115,7 +115,7 @@ class CPUMonitor():
 
         # CPU stats
         self._temp_stat = DiagnosticStatus()
-        self._temp_stat.name = 'CPU Temperature (%s)' % diag_hostname
+        self._temp_stat.name = 'sys_mon: CPU Temperature (%s)' % diag_hostname
         self._temp_stat.level = 1
         self._temp_stat.hardware_id = hostname
         self._temp_stat.message = 'No Data'
@@ -123,7 +123,7 @@ class CPUMonitor():
                                    KeyValue(key = 'Time Since Last Update', value = 'N/A') ]
 
         self._usage_stat = DiagnosticStatus()
-        self._usage_stat.name = 'CPU Usage (%s)' % diag_hostname
+        self._usage_stat.name = 'sys_mon: CPU Usage (%s)' % diag_hostname
         self._usage_stat.level = 1
         self._usage_stat.hardware_id = hostname
         self._usage_stat.message = 'No Data'
@@ -240,7 +240,7 @@ class CPUMonitor():
                 if len(words) < 2:
                     continue
 
-                speed = words[1].strip().split('.')[0] # Conversion to float doesn't work with decimal
+                speed = words[1].strip().split('.')[0]  # Conversion to float doesn't work with decimal
                 vals.append(KeyValue(key = 'Core %d Clock Speed' % index, value = speed+"MHz"))
 
         except Exception as e:
@@ -273,9 +273,9 @@ class CPUMonitor():
                 return DiagnosticStatus.ERROR, vals
 
             upvals = stdout.split()
-            load1 = float(upvals[-3].rstrip(','))/self._num_cores
-            load5 = float(upvals[-2].rstrip(','))/self._num_cores
-            load15 = float(upvals[-1])/self._num_cores
+            load1 = float(upvals[-3].rstrip(',').replace(',', '.'))/self._num_cores
+            load5 = float(upvals[-2].rstrip(',').replace(',', '.'))/self._num_cores
+            load15 = float(upvals[-1].replace(',', '.'))/self._num_cores
 
             # Give warning if we go over load limit
             if load1 > self._cpu_load1_warn or load5 > self._cpu_load5_warn:
@@ -344,10 +344,10 @@ class CPUMonitor():
                     continue
 
                 cpu_name = '%d' % (num_cores)
-                idle = lst[idle_col]
-                user = lst[3]
-                nice = lst[4]
-                system = lst[5]
+                idle = lst[idle_col].replace(',', '.')
+                user = lst[3].replace(',', '.')
+                nice = lst[4].replace(',', '.')
+                system = lst[5].replace(',', '.')
 
                 core_level = 0
                 usage = (float(user)+float(nice))*1e-2
@@ -397,7 +397,8 @@ class CPUMonitor():
     def get_core_temp_names(self):
         temp_vals = []
         try:
-            p = subprocess.Popen('find /sys/devices -name temp1_input',
+            # p = subprocess.Popen('find /sys/devices -name temp1_input',
+            p = subprocess.Popen('find /sys/devices/platform/coretemp.0/hwmon/hwmon4 -name *input',
                                 stdout = subprocess.PIPE,
                                 stderr = subprocess.PIPE, shell = True)
             stdout, stderr = p.communicate()

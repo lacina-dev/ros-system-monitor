@@ -22,4 +22,4 @@ ntp_monitor:
   error_offset_tolerance: 5000000.0
 net_monitor:
   net_level_warn: 0.95
-  net_capacity: 128.0
+  net_capacity: 10.0

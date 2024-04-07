@@ -63,7 +63,7 @@ def ntp_monitor(offset=500, self_offset=500, diag_hostname = None, error_offset 
 
     stat = DiagnosticStatus()
     stat.level = 0
-    stat.name = "NTP offset from "+ diag_hostname + " to " + ntp_hostname
+    stat.name = "sys_mon: NTP offset from "+ diag_hostname + " to " + ntp_hostname
     stat.message = "OK"
     stat.hardware_id = hostname
     stat.values = []
