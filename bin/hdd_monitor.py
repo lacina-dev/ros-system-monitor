@@ -164,7 +164,7 @@ class hdd_monitor():
         self._usage_stat = DiagnosticStatus()
         self._usage_stat.level = DiagnosticStatus.ERROR
         self._usage_stat.hardware_id = hostname
-        self._usage_stat.name = 'HDD Usage (%s)' % diag_hostname
+        self._usage_stat.name = 'sys_mon: HDD Usage (%s)' % diag_hostname
         self._usage_stat.values = [ KeyValue(key = 'Update Status', value = 'No Data' ),
                                     KeyValue(key = 'Time Since Last Update', value = 'N/A') ]
         self.check_disk_usage()
@@ -195,10 +195,10 @@ class hdd_monitor():
         for index in range(0, len(drives)):
             temp = temps[index]
             
-            try:
-                temp = unicode(temp)
-            except:
-                temp = str(temp)
+            # try:
+            #     temp = unicode(temp)
+            # except:
+            temp = str(temp)
             
             if not temp.isnumeric() and drives[index] not in REMOVABLE:
                 temp_level = DiagnosticStatus.ERROR
